@@ -1,0 +1,31 @@
+# ----------------------------------------------------------------------
+# Configuraciones de Visual Studio Code
+# Ignora la carpeta .vscode que contiene configuraciones específicas 
+# del editor que no deben subirse al repositorio (ej. settings.json local).
+# ----------------------------------------------------------------------
+.vscode/
+
+# ----------------------------------------------------------------------
+# Entornos Virtuales y Python
+# Ignora las carpetas comunes de entornos virtuales (venv, env) 
+# y los archivos de caché generados por Python.
+# ----------------------------------------------------------------------
+# Entornos virtuales
+venv/
+env/
+
+# Archivos compilados y de caché de Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+
+# ----------------------------------------------------------------------
+# Archivos Temporales y del Sistema Operativo
+# ----------------------------------------------------------------------
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
