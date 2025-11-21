@@ -27,3 +27,17 @@ class Analizador:
         if nombre not in totales:
             raise KeyError("Provincia no encontrada")
         return totales[nombre]
+
+    # ---- Estadística adicional: provincia con mayor volumen de importaciones ----
+    def provincia_mayor_importacion(self):
+        totales_import = {}
+        for fila in self.datos:
+            provincia = fila["PROVINCIA"].lower().strip()
+            importe = float(fila["IMPORTACIONES"])
+            totales_import[provincia] = totales_import.get(provincia, 0) + importe
+
+        if not totales_import:
+            return None
+
+        provincia_max = max(totales_import, key=totales_import.get)
+        return provincia_max
