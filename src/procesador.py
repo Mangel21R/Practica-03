@@ -2,57 +2,28 @@ import csv
 
 class Analizador:
     def __init__(self, ruta_csv):
-        # Guardamos la ruta del archivo CSV
         self.ruta_csv = ruta_csv
-        # Leemos el archivo CSV y guardamos los datos en memoria
         self.datos = self.leer_csv()
 
     def leer_csv(self):
-        """Lee el archivo CSV y devuelve una lista de filas."""
         datos = []
         with open(self.ruta_csv, "r", encoding="utf-8") as archivo:
-            # CORRECCIÓN: 'delimeter' a 'delimiter'
-            lector = csv.DictReader(archivo, delimiter='|') 
+            lector = csv.DictReader(archivo, delimiter='|')
             for fila in lector:
                 datos.append(fila)
         return datos
 
     def ventas_totales_por_provincia(self):
-        """
-        Devuelve un diccionario con el total de ventas por provincia.
-        Ejemplo: {'Pichincha': 1000.0, 'Guayas': 2000.5}
-        """
         totales = {}
-
-        # Recorremos todas las filas del archivo
         for fila in self.datos:
-            provincia = fila["PROVINCIA"]
-            
-            # Es buena práctica manejar posibles errores de conversión aquí
-            try:
-                total_venta = float(fila["TOTAL_VENTAS"])
-            except ValueError:
-                print(f"Advertencia: El valor '{fila['TOTAL_VENTAS']}' no es numérico y fue omitido.")
-                continue # Pasa a la siguiente fila
-
-            # Si la provincia no está en el diccionario, la agregamos
-            if provincia not in totales:
-                totales[provincia] = total_venta
-            else:
-                # Si ya existe, sumamos el valor
-                totales[provincia] += total_venta
-
+            provincia = fila["PROVINCIA"].lower().strip()
+            total = float(fila["TOTAL_VENTAS"])
+            totales[provincia] = totales.get(provincia, 0) + total
         return totales
 
     def ventas_por_provincia(self, nombre):
-        """
-        Devuelve el total de ventas de una provincia específica.
-        Ejemplo: ventas_por_provincia("Guayas") -> 2000.5
-        """
+        nombre = nombre.lower().strip()
         totales = self.ventas_totales_por_provincia()
-
-        # Verificamos si la provincia está en los totales
-        if nombre in totales:
-            return totales[nombre]
-        else:
-            return 0.0
+        if nombre not in totales:
+            raise KeyError("Provincia no encontrada")
+        return totales[nombre]
